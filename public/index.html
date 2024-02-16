@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriber Management</title>
+</head>
+<body>
+<div id="app">
+    <h1>Subscriber Management</h1>
+
+    <!-- Form to Insert Subscriber -->
+    <form @submit.prevent="insertSubscriber">
+        <label>Email: </label>
+        <input type="text" v-model="email" required>
+
+        <label>Name: </label>
+        <input type="text" v-model="name" required>
+
+        <label>Last Name: </label>
+        <input type="text" v-model="lastName" required>
+
+        <label>Status: </label>
+        <input type="text" v-model="status" required>
+
+        <button type="submit">Insert Subscriber</button>
+    </form>
+
+    <!-- Retrieve Subscriber -->
+    <div>
+        <label>Retrieve Subscriber by Email: </label>
+        <input type="text" v-model="retrieveEmail" required>
+
+        <button @click="retrieveSubscriber">Retrieve Subscriber</button>
+    </div>
+
+    <!-- Display Subscriber -->
+    <div v-if="subscriber">
+        <h2>Subscriber Details</h2>
+        <p>Email: {{ subscriber.email }}</p>
+        <p>Name: {{ subscriber.name }}</p>
+        <p>Last Name: {{ subscriber.lastName }}</p>
+        <p>Status: {{ subscriber.status }}</p>
+    </div>
+
+    <!-- Pagination -->
+    <div>
+        <button @click="prevPage" :disabled="currentPage === 1">Previous Page</button>
+        <span>Page {{ currentPage }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">Next Page</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            email: '',
+            name: '',
+            lastName: '',
+            status: '',
+            retrieveEmail: '',
+            subscriber: null,
+            currentPage: 1,
+            totalPages: 10, // Assuming 10 pages of subscribers
+        },
+        methods: {
+            insertSubscriber: function () {
+                // AJAX request to insert subscriber
+                fetch('src/write_subscriber.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: this.email,
+                        name: this.name,
+                        lastName: this.lastName,
+                        status: this.status,
+                    }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to insert subscriber');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Subscriber inserted:', data);
+                        // Update UI, show success message, etc.
+                    })
+                    .catch(error => {
+                        console.error('Error inserting subscriber:', error.message);
+                        // Handle error
+                        // Update UI, show error message, etc.
+                    });
+            },
+
+            retrieveSubscriber: function () {
+                // AJAX request to retrieve subscriber
+                fetch(`src/get_subscriber.php?email=${this.retrieveEmail}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to retrieve subscriber');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Subscriber retrieved:', data);
+                        this.subscriber = data; // Update Vue data with retrieved subscriber
+                        // Handle success
+                        // Update UI, show success message, etc.
+                    })
+                    .catch(error => {
+                        console.error('Error retrieving subscriber:', error.message);
+                        // Handle error
+                        // Update UI, show error message, etc.
+                        this.subscriber = null; // Clear the data on error
+                    });
+            },
+            prevPage: function () {
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                }
+            },
+            nextPage: function () {
+                if (this.currentPage < this.totalPages) {
+                    this.currentPage++;
+                }
+            },
+        },
+    });
+</script>
+
+</body>
+</html>
