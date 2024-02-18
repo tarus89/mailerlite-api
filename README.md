@@ -1,6 +1,6 @@
-# MailerLite API
+# MailerLite Test Assessment API
 
-This is a simple PHP-based API for managing subscribers using MailerLite. The application includes endpoints for writing and retrieving subscribers, along with a basic Vue page for interaction.
+This is a simple PHP-based API for managing subscribers. The application includes endpoints for writing and retrieving subscribers, along with a basic Vue page for interaction.
 
 ## Getting Started
 
