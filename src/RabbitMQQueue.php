@@ -1,4 +1,7 @@
 <?php
+
+namespace MailerLite;
+
 require 'env_loader.php';
 
 class RabbitMQQueue implements QueueInterface

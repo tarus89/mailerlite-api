@@ -1,5 +1,7 @@
 <?php
 
+namespace MailerLite;
+
 class SubscriberRepository
 {
     private $db;

@@ -1,4 +1,6 @@
 <?php
+namespace MailerLite;
+
 require 'env_loader.php';
 
 class RedisCache implements CacheInterface

@@ -1,5 +1,7 @@
 <?php
 
+namespace MailerLite;
+
 class SubscriberController
 {
     private $service;

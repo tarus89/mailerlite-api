@@ -1,5 +1,6 @@
 <?php
 
+namespace MailerLite;
 interface CacheInterface
 {
     public function get($key);

@@ -1,19 +1,21 @@
 <?php
-require_once 'vendor/autoload.php';
-require_once 'src/DatabaseConnection.php';
-require_once 'src/RedisCache.php';
-require_once 'src/RabbitMQQueue.php';
-require_once 'src/SubscriberRepository.php';
-require_once 'src/SubscriberService.php';
-require_once 'src/SubscriberController.php';
+namespace MailerLite\Tests;
 
-
+use MailerLite\DatabaseConnection;
+use MailerLite\RabbitMQQueue;
+use MailerLite\RedisCache;
+use MailerLite\SubscriberController;
+use MailerLite\SubscriberRepository;
+use MailerLite\SubscriberService;
 use PHPUnit\Framework\TestCase;
 
 class SubscriberTest extends TestCase
 {
 
-    // Test writing a subscriber
+    /**
+     * Test writing a subscriber
+     * @return void
+     */
     public function testWriteSubscriber()
     {
         $databaseMock = $this->getMockBuilder(DatabaseConnection::class)->disableOriginalConstructor()->getMock();
@@ -27,8 +29,8 @@ class SubscriberTest extends TestCase
         $controller = new SubscriberController($service);
 
         $email = 'test11@example.com';
-        $name = 'John';
-        $lastName = 'Doe';
+        $name = 'Daniel';
+        $lastName = 'Tarus';
         $status = 'active';
 
         $result = $controller->handleWriteSubscriberRequest($email, $name, $lastName, $status);
@@ -36,7 +38,10 @@ class SubscriberTest extends TestCase
         $this->assertTrue($result['success']);
     }
 
-    // Test retrieving a subscriber
+    /**
+     * Test retrieving a subscriber
+     * @return void
+     */
     public function testRetrieveSubscriber()
     {
         $databaseMock = $this->getMockBuilder(DatabaseConnection::class)->disableOriginalConstructor()->getMock();
